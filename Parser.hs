@@ -1,5 +1,7 @@
 module Parser
-  (
+  ( tokenize,
+    infixToPrefix,
+    parse,
   )
 where
 
@@ -37,12 +39,12 @@ infixToPrefix :: [Token] -> [Token]
 infixToPrefix tokens = map fst (sortToken $ evaluateToken tokens 1 "")
 
 evaluateToken :: [Token] -> Int -> String -> [(Token, String)]
-evaluateToken (InitExp : xs) c s = evaluateToken xs c (s ++ show c)
+evaluateToken (InitExp : xs) c s = evaluateToken xs 1 (s ++ show c)
+evaluateToken [EndExp] c s = []
+evaluateToken (EndExp : xs) c s = evaluateToken xs c (init s)
 evaluateToken (exp : xs) 1 s = (exp, s ++ "1") : evaluateToken xs 0 s
 evaluateToken (exp : xs) 0 s = (exp, s ++ "0") : evaluateToken xs 2 s
-evaluateToken (exp : xs) 2 s = (exp, s ++ "2") : evaluateToken xs (-1) s
-evaluateToken [EndExp] (-1) s = []
-evaluateToken (EndExp : xs) (-1) s = evaluateToken xs 0 (init s)
+evaluateToken (exp : xs) 2 s = (exp, s ++ "2") : evaluateToken xs 0 s
 
 sortToken :: [(Token, String)] -> [(Token, String)]
 sortToken = sortBy (\(token, strA) (tokenB, strB) -> compare strA strB)
