@@ -16,19 +16,19 @@ A utilização do programa espera um arquivo que servirá como entrada
 O Programa responderá se a expressão é verdade ou não e gerará um arquivo de saída contendo
 a árvore de dedução gerada. 
 
-### Arquivo de entrada
+### Backus-Naur Form do arquivo de entrada
 
-\<expressoes> := \<expressao> | \<expressao> **'\n'** \<expressoes>
+\<expressoes> ::= \<expressao> | \<expressao> **'\n'** \<expressoes>
 
-\<expressao> :=  \<variavel> | **(** \<expressao> \<infix_operando> \<expressao> **)** | \<prefix_operando> \<expressao>
+\<expressao> ::=  \<variavel> | **(** \<expressao> \<infix_operando> \<expressao> **)** | \<prefix_operando> \<expressao>
 
-\<infix_operando> := **→** | **∧** | **∨**
+\<infix_operando> ::= **→** | **∧** | **∨**
 
-\<prefix_operando> := **¬**
+\<prefix_operando> ::= **¬**
 
-\<variavel> := \<char> | \<char> \<variavel>
+\<variavel> ::= \<char> | \<char> \<variavel>
 
-\<char> := // qualquer coisa diferente de **¬ → ∧ ∨ ( )**
+\<char> ::= // qualquer coisa diferente de **¬ → ∧ ∨ ( )**
 
 #### Exemplos: 
 ```
