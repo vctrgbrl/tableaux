@@ -20,7 +20,7 @@ a árvore de dedução gerada.
 
 \<expressoes> ::= \<expressao> | \<expressao> **'\n'** \<expressoes>
 
-\<expressao> ::=  \<variavel> | **(** \<expressao> \<infix_operando> \<expressao> **)** | \<prefix_operando> \<expressao>
+\<expressao> ::= **(** \<variavel> **)** | **(** \<expressao> \<infix_operando> \<expressao> **)** | \<prefix_operando> \<expressao>
 
 \<infix_operando> ::= **→** | **∧** | **∨**
 
@@ -35,9 +35,9 @@ a árvore de dedução gerada.
 (p∨(q∧r))→((p∨q)∧(p∨r))
 ```
 ```
-a
-a→b
-b
+(a)
+(a→b)
+(b)
 ```
 A última expressão, sendo as expressões dividias pela quebra de linha, será interpretada como conclusão, sendo assim, negada.
 
