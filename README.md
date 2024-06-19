@@ -11,9 +11,9 @@ Victor Sant'Ana
 A utilização do programa espera um arquivo que servirá como entrada
 
 ```sh
-./tableux "file.txt"
+./Main "teste_0.txt"
 ```
-O Programa responderá se a expressão é verdade ou não e gerará um arquivo de saída contendo
+O programa responderá se a expressão é verdade ou não e gerará um arquivo de saída de nome **output.txt** contendo
 a árvore de dedução gerada. 
 
 ### Backus-Naur Form do arquivo de entrada
@@ -40,3 +40,15 @@ a→b
 b
 ```
 A última expressão, sendo as expressões dividias pela quebra de linha, será interpretada como conclusão, sendo assim, negada.
+
+### Compilando
+
+Para compilar é necessário ter o GHC instalado e executar o comando
+
+```sh
+ghc Main.hs
+```
+
+### Arquivo de saída
+
+O arquivo de saída contém uma representação da árvore de refutação aonde 0 representa um ramo a "esquerda" e 1 um ramo a "direita"

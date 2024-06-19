@@ -1,0 +1,8 @@
+"Raiz":((Implicação (Variável "b") (ELogico (Variável "a") (OuLogico (Variável "b") (Variável "a")))),False)
+"Raiz":((Variável "b"),True)
+"Raiz":((ELogico (Variável "a") (OuLogico (Variável "b") (Variável "a"))),False)
+"Raiz-0":((Variável "a"),False)
+
+"Raiz-1":((OuLogico (Variável "b") (Variável "a")),False)
+"Raiz-1":((Variável "b"),False)
+"Raiz-1":((Variável "a"),False)

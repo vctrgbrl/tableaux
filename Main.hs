@@ -13,5 +13,6 @@ main = do
   handle <- openFile (head args) ReadMode
   contents <- hGetContents handle
   let a = solve $ addBool $ map (fst . parse . infixToPrefix . tokenize) (split contents '\n')
-  print a
+  print (fst a)
+  writeFile "output.txt" (snd a)
   hClose handle

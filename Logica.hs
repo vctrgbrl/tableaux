@@ -1,6 +1,5 @@
 module Logica
-  (
-    solve,
+  ( solve,
     Expressao (Variavel, Implicacao, ELogico, OuLogico, Negacao),
   )
 where
@@ -20,24 +19,51 @@ argument :: [(Expressao, Bool)]
 argument = [(Implicacao (OuLogico (Variavel "p") (ELogico (Variavel "q") (Variavel "r"))) (ELogico (OuLogico (Variavel "p") (Variavel "q")) (OuLogico (Variavel "p") (Variavel "r"))), False)]
 
 -- argument = [(Implicacao (Variavel "b") (ELogico (Variavel "a") (OuLogico (Variavel "b") (Variavel "a"))), False)]
-solve :: [(Expressao, Bool)] -> Bool
-solve exprs = _solve exprs []
+solve :: [(Expressao, Bool)] -> (Bool, [Char])
+solve exprs = _solve exprs [] "Raiz"
 
-_solve :: [(Expressao, Bool)] -> [(Expressao, Bool)] -> Bool
-_solve ((Variavel x, v) : exprs) vars = _solve exprs (vars ++ [(Variavel x, v)])
+_solve :: [(Expressao, Bool)] -> [(Expressao, Bool)] -> [Char] -> (Bool, [Char])
+_solve ((Variavel x, v) : exprs) vars num = do
+  let res = show num ++ ":" ++ show (Variavel x, v)
+  let (a, b) = _solve exprs (vars ++ [(Variavel x, v)]) num
+  (a, res ++ "\n" ++ b)
 --
-_solve ((Implicacao expX expY, True) : exprs) vars = _solve (exprs ++ [(expX, False)]) vars && _solve (exprs ++ [(expY, True)]) vars
-_solve ((Implicacao expX expY, False) : exprs) vars = _solve (exprs ++ [(expX, True), (expY, False)]) vars
+_solve ((Implicacao expX expY, True) : exprs) vars num = do
+  let res = show num ++ ":" ++ show (Implicacao expX expY, True)
+  let (a, b) = _solve (exprs ++ [(expX, False)]) vars (num ++ "-0")
+  let (c, d) = _solve (exprs ++ [(expY, True)]) vars (num ++ "-1")
+  (a && c, res ++ "\n" ++ b ++ "\n" ++ d)
+_solve ((Implicacao expX expY, False) : exprs) vars num = do
+  let res = show num ++ ":" ++ show (Implicacao expX expY, False)
+  let (a, b) = _solve (exprs ++ [(expX, True), (expY, False)]) vars num
+  (a, res ++ "\n" ++ b)
 --
-_solve ((ELogico expX expY, True) : exprs) vars = _solve (exprs ++ [(expX, True), (expY, True)]) vars
-_solve ((ELogico expX expY, False) : exprs) vars = _solve (exprs ++ [(expX, False)]) vars && _solve (exprs ++ [(expY, False)]) vars
+_solve ((ELogico expX expY, True) : exprs) vars num = do
+  let res = show num ++ ":" ++ show (ELogico expX expY, True)
+  let (a, b) = _solve (exprs ++ [(expX, True), (expY, True)]) vars num
+  (a, res ++ "\n" ++ b)
+_solve ((ELogico expX expY, False) : exprs) vars num = do
+  let res = show num ++ ":" ++ show (ELogico expX expY, False)
+  let (a, b) = _solve (exprs ++ [(expX, False)]) vars (num ++ "-0")
+  let (c, d) = _solve (exprs ++ [(expY, False)]) vars (num ++ "-1")
+  (a && c, res ++ "\n" ++ b ++ "\n" ++ d)
 --
-_solve ((OuLogico expX expY, True) : exprs) vars = _solve (exprs ++ [(expX, True)]) vars && _solve (exprs ++ [(expY, True)]) vars
-_solve ((OuLogico expX expY, False) : exprs) vars = _solve (exprs ++ [(expX, False), (expY, False)]) vars
+_solve ((OuLogico expX expY, True) : exprs) vars num = do
+  let res = show num ++ ":" ++ show (OuLogico expX expY, True)
+  let (a, b) = _solve (exprs ++ [(expX, True)]) vars (num ++ "-0")
+  let (c, d) = _solve (exprs ++ [(expY, True)]) vars (num ++ "-1")
+  (a && c, res ++ "\n" ++ b ++ "\n" ++ d)
+_solve ((OuLogico expX expY, False) : exprs) vars num = do
+  let res = show num ++ ":" ++ show (OuLogico expX expY, False)
+  let (a, b) = _solve (exprs ++ [(expX, False), (expY, False)]) vars num
+  (a, res ++ "\n" ++ b)
 --
-_solve ((Negacao expX, v) : exprs) vars = _solve (exprs ++ [(expX, not v)]) vars
+_solve ((Negacao expX, v) : exprs) vars num = do
+  let res = show num ++ ":" ++ show (Negacao expX, v)
+  let (a, b) = _solve (exprs ++ [(expX, not v)]) vars num
+  (a, res ++ "\n" ++ b)
 --
-_solve [] vars = hasContradiction $ sortVars vars
+_solve [] vars num = (hasContradiction $ sortVars vars, "")
 
 sortVars = sortBy (\(Variavel a, v) (Variavel b, g) -> compare a b)
 
