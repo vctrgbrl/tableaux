@@ -20,46 +20,46 @@ argument = [(Implicacao (OuLogico (Variavel "p") (ELogico (Variavel "q") (Variav
 
 -- argument = [(Implicacao (Variavel "b") (ELogico (Variavel "a") (OuLogico (Variavel "b") (Variavel "a"))), False)]
 solve :: [(Expressao, Bool)] -> (Bool, [Char])
-solve exprs = _solve exprs [] "Raiz"
+solve exprs = _solve exprs [] ""
 
 _solve :: [(Expressao, Bool)] -> [(Expressao, Bool)] -> [Char] -> (Bool, [Char])
 _solve ((Variavel x, v) : exprs) vars num = do
-  let res = show num ++ ":" ++ show (Variavel x, v)
+  let res = num ++ "" ++ show (Variavel x, v)
   let (a, b) = _solve exprs (vars ++ [(Variavel x, v)]) num
   (a, res ++ "\n" ++ b)
 --
 _solve ((Implicacao expX expY, True) : exprs) vars num = do
-  let res = show num ++ ":" ++ show (Implicacao expX expY, True)
-  let (a, b) = _solve (exprs ++ [(expX, False)]) vars (num ++ "-0")
-  let (c, d) = _solve (exprs ++ [(expY, True)]) vars (num ++ "-1")
+  let res = num ++ "" ++ show (Implicacao expX expY, True)
+  let (a, b) = _solve (exprs ++ [(expX, False)]) vars (num ++ "\t")
+  let (c, d) = _solve (exprs ++ [(expY, True)]) vars (num ++ "\t")
   (a && c, res ++ "\n" ++ b ++ "\n" ++ d)
 _solve ((Implicacao expX expY, False) : exprs) vars num = do
-  let res = show num ++ ":" ++ show (Implicacao expX expY, False)
+  let res = num ++ "" ++ show (Implicacao expX expY, False)
   let (a, b) = _solve (exprs ++ [(expX, True), (expY, False)]) vars num
   (a, res ++ "\n" ++ b)
 --
 _solve ((ELogico expX expY, True) : exprs) vars num = do
-  let res = show num ++ ":" ++ show (ELogico expX expY, True)
+  let res = num ++ "" ++ show (ELogico expX expY, True)
   let (a, b) = _solve (exprs ++ [(expX, True), (expY, True)]) vars num
   (a, res ++ "\n" ++ b)
 _solve ((ELogico expX expY, False) : exprs) vars num = do
-  let res = show num ++ ":" ++ show (ELogico expX expY, False)
-  let (a, b) = _solve (exprs ++ [(expX, False)]) vars (num ++ "-0")
-  let (c, d) = _solve (exprs ++ [(expY, False)]) vars (num ++ "-1")
+  let res = num ++ "" ++ show (ELogico expX expY, False)
+  let (a, b) = _solve (exprs ++ [(expX, False)]) vars (num ++ "\t")
+  let (c, d) = _solve (exprs ++ [(expY, False)]) vars (num ++ "\t")
   (a && c, res ++ "\n" ++ b ++ "\n" ++ d)
 --
 _solve ((OuLogico expX expY, True) : exprs) vars num = do
-  let res = show num ++ ":" ++ show (OuLogico expX expY, True)
-  let (a, b) = _solve (exprs ++ [(expX, True)]) vars (num ++ "-0")
-  let (c, d) = _solve (exprs ++ [(expY, True)]) vars (num ++ "-1")
+  let res = num ++ "" ++ show (OuLogico expX expY, True)
+  let (a, b) = _solve (exprs ++ [(expX, True)]) vars (num ++ "\t")
+  let (c, d) = _solve (exprs ++ [(expY, True)]) vars (num ++ "\t")
   (a && c, res ++ "\n" ++ b ++ "\n" ++ d)
 _solve ((OuLogico expX expY, False) : exprs) vars num = do
-  let res = show num ++ ":" ++ show (OuLogico expX expY, False)
+  let res = num ++ "" ++ show (OuLogico expX expY, False)
   let (a, b) = _solve (exprs ++ [(expX, False), (expY, False)]) vars num
   (a, res ++ "\n" ++ b)
 --
 _solve ((Negacao expX, v) : exprs) vars num = do
-  let res = show num ++ ":" ++ show (Negacao expX, v)
+  let res = num ++ "" ++ show (Negacao expX, v)
   let (a, b) = _solve (exprs ++ [(expX, not v)]) vars num
   (a, res ++ "\n" ++ b)
 --
